@@ -7,7 +7,6 @@ export interface IUser {
     firstName: string;
     lastName: string;
     email: string;
-    // type: string;
     role: string;
     isEmailVerified: boolean;
     accountStatus: string;
