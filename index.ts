@@ -7,12 +7,13 @@ import express, {
 } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import db_init from './src/db/init'
 
 const app = express();
 
 dotenv.config();
-app.use(cors({ origin: "*" }));
 
+app.use(cors({ origin: "*" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -37,12 +38,13 @@ app.get("/", (request: Request, response: Response) => {
     response.send(`Welcome to ${process.env.APP_NAME}`);
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.DB_PORT || 5000;
 
 const Bootstrap = async () => {
     try {
+        await db_init()
         app.listen(PORT, () => {
-            console.log("Connected has been established successfully. 🚀");
+            console.log(`Listening on port ${PORT}. 🚀`);
         });
     } catch (error) {
         console.error("Unable to connect to the database:", error);
