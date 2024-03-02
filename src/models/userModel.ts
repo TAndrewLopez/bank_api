@@ -1,5 +1,5 @@
 import db from "../db";
-import { IUserModel } from "../interfaces/user";
+import { IUserModel } from "../interfaces/userInterface";
 import { DataTypes } from "sequelize";
 
 const UserModel = db.define<IUserModel>(

@@ -7,7 +7,8 @@ import express, {
 } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import db_init from './src/db/init'
+import db_init from "./src/db/init";
+import UserRouter from "./src/router/userRouter";
 
 const app = express();
 
@@ -34,6 +35,8 @@ app.use(
     }
 );
 
+app.use("/api/user", UserRouter);
+
 app.get("/", (request: Request, response: Response) => {
     response.send(`Welcome to ${process.env.APP_NAME}`);
 });
@@ -42,7 +45,7 @@ const PORT = process.env.DB_PORT || 5000;
 
 const Bootstrap = async () => {
     try {
-        await db_init()
+        await db_init();
         app.listen(PORT, () => {
             console.log(`Listening on port ${PORT}. 🚀`);
         });
