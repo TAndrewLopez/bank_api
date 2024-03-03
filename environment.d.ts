@@ -11,6 +11,8 @@ declare global {
             DB_ALTER: string;
             JWT_KEY: string;
             SEND_GRID_API_KEY: string;
+            SMTP_USER: string;
+            SMTP_PASSWORD: string;
         }
     }
 }

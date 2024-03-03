@@ -3,15 +3,13 @@ import { Request, Response } from "express";
 import JWT from "jsonwebtoken";
 
 import { ResponseCode } from "../interfaces/enum/responseCodeEnum";
-import {
-    AccountStatus,
-    EmailStatus,
-    UserRole,
-} from "../interfaces/enum/userEnum";
+import { AccountStatus, EmailStatus, UserRole } from "../interfaces/enum/userEnum";
 import { IUserCreationBody } from "../interfaces/userInterface";
 import UserService from "../services/userService";
 import Utility from "../utils/index.utils";
 import TokenService from "../services/tokenService";
+import EmailService from "../services/emailService";
+import { IToken } from "../interfaces/tokenInterface";
 
 class UserController {
     private userService: UserService;
@@ -41,28 +39,15 @@ class UserController {
             });
 
             if (userExists) {
-                Utility.handleError(
-                    response,
-                    "Email already exists.",
-                    ResponseCode.ALREADY_EXISTS
-                );
+                Utility.handleError(response, "Email already exists.", ResponseCode.ALREADY_EXISTS);
             }
 
             let user = await this.userService.createUser(newUser);
             user.password = "";
 
-            return Utility.handleSuccess(
-                response,
-                "User registered successfully.",
-                { user },
-                ResponseCode.SUCCESS
-            );
+            return Utility.handleSuccess(response, "User registered successfully.", { user }, ResponseCode.SUCCESS);
         } catch (error) {
-            return Utility.handleError(
-                response,
-                (error as TypeError).message,
-                ResponseCode.SERVER_ERROR
-            );
+            return Utility.handleError(response, (error as TypeError).message, ResponseCode.SERVER_ERROR);
         }
     }
 
@@ -74,24 +59,13 @@ class UserController {
             });
 
             if (!user) {
-                return Utility.handleError(
-                    response,
-                    "Invalid Credentials.",
-                    ResponseCode.NOT_FOUND
-                );
+                return Utility.handleError(response, "Invalid Credentials.", ResponseCode.NOT_FOUND);
             }
 
-            const passwordMatches = await bcrypt.compare(
-                params.password,
-                user.password
-            );
+            const passwordMatches = await bcrypt.compare(params.password, user.password);
 
             if (!passwordMatches) {
-                return Utility.handleError(
-                    response,
-                    "Invalid Credentials.",
-                    ResponseCode.NOT_FOUND
-                );
+                return Utility.handleError(response, "Invalid Credentials.", ResponseCode.NOT_FOUND);
             }
 
             const token = JWT.sign(
@@ -108,18 +82,9 @@ class UserController {
                 }
             );
 
-            return Utility.handleSuccess(
-                response,
-                "Login Successful.",
-                { user, token },
-                ResponseCode.SUCCESS
-            );
+            return Utility.handleSuccess(response, "Login Successful.", { user, token }, ResponseCode.SUCCESS);
         } catch (error) {
-            return Utility.handleError(
-                response,
-                (error as TypeError).message,
-                ResponseCode.SERVER_ERROR
-            );
+            return Utility.handleError(response, (error as TypeError).message, ResponseCode.SERVER_ERROR);
         }
     }
 
@@ -131,28 +96,16 @@ class UserController {
             });
 
             if (!user) {
-                return Utility.handleError(
-                    response,
-                    "Account does not exist.",
-                    ResponseCode.NOT_FOUND
-                );
+                return Utility.handleError(response, "Account does not exist.", ResponseCode.NOT_FOUND);
             }
 
-            const token = await this.tokenService.createForgotPasswordToken(user.email);
-            // await EmailService.sendForgotPasswordEmail(user.email, token.code);
+            const token = (await this.tokenService.createForgotPasswordToken(user.email)) as IToken;
+            
+            await EmailService.sendForgotPasswordEmail(user.email, token.code);
 
-            return Utility.handleSuccess(
-                response,
-                "Forgot password reset code has been emailed.",
-                {},
-                ResponseCode.SUCCESS
-            );
+            return Utility.handleSuccess(response, "Forgot password reset code has been emailed.", {}, ResponseCode.SUCCESS);
         } catch (error) {
-            return Utility.handleError(
-                response,
-                (error as TypeError).message,
-                ResponseCode.SERVER_ERROR
-            );
+            return Utility.handleError(response, (error as TypeError).message, ResponseCode.SERVER_ERROR);
         }
     }
 
@@ -160,11 +113,7 @@ class UserController {
         try {
             response.send({ message: "Reset password successful." });
         } catch (error) {
-            return Utility.handleError(
-                response,
-                (error as TypeError).message,
-                ResponseCode.SERVER_ERROR
-            );
+            return Utility.handleError(response, (error as TypeError).message, ResponseCode.SERVER_ERROR);
         }
     }
 }

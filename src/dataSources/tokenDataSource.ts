@@ -1,9 +1,4 @@
-import {
-    IFindTokenQuery,
-    IToken,
-    ITokenCreationBody,
-    ITokenDataSource,
-} from "../interfaces/tokenInterface";
+import { IFindTokenQuery, IToken, ITokenCreationBody, ITokenDataSource } from "../interfaces/tokenInterface";
 import TokenModel from "../models/tokenModel";
 
 class TokenDataSource implements ITokenDataSource {
@@ -13,10 +8,7 @@ class TokenDataSource implements ITokenDataSource {
     async fetchOne(query: IFindTokenQuery): Promise<IToken | null> {
         return await TokenModel.findOne(query);
     }
-    async updateOne(
-        data: Partial<IToken>,
-        query: IFindTokenQuery
-    ): Promise<void> {
+    async updateOne(data: Partial<IToken>, query: IFindTokenQuery): Promise<void> {
         await TokenModel.update(data, query);
     }
 }

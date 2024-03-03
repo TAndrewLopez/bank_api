@@ -14,27 +14,21 @@ const createUserRoute = () => {
     const tokenService = new TokenService(new TokenDataSource());
     const userController = new UserController(userService, tokenService);
 
-    router.post(
-        "/register",
-        validator(ValidationSchema.registerSchema),
-        (request: Request, response: Response) => {
-            return userController.register(request, response);
-        }
-    );
+    router.post("/register", validator(ValidationSchema.registerSchema), (request: Request, response: Response) => {
+        return userController.register(request, response);
+    });
+
+    router.post("/login", validator(ValidationSchema.loginSchema), (request: Request, response: Response) => {
+        return userController.login(request, response);
+    });
 
     router.post(
-        "/login",
-        validator(ValidationSchema.loginSchema),
-        (request: Request, response: Response) => {
-            return userController.login(request, response);
-        }
-    );
-
-    router.post("/forgotPassword",
+        "/forgotPassword",
         validator(ValidationSchema.forgotPasswordSchema),
         (request: Request, response: Response) => {
             return userController.forgotPassword(request, response);
-        });
+        }
+    );
 
     router.post("/resetPassword", (request: Request, response: Response) => {
         return userController.resetPassword(request, response);

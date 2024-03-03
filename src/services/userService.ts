@@ -1,9 +1,4 @@
-import {
-    IFindUserQuery,
-    IUser,
-    IUserCreationBody,
-    IUserDataSource,
-} from "../interfaces/userInterface";
+import { IFindUserQuery, IUser, IUserCreationBody, IUserDataSource } from "../interfaces/userInterface";
 
 class UserService {
     private userDataSource: IUserDataSource;

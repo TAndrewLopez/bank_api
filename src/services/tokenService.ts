@@ -1,10 +1,6 @@
 import moment from "moment";
 import TokenDataSource from "../dataSources/tokenDataSource";
-import {
-    IFindTokenQuery,
-    IToken,
-    ITokenCreationBody,
-} from "../interfaces/tokenInterface";
+import { IFindTokenQuery, IToken, ITokenCreationBody } from "../interfaces/tokenInterface";
 import Utility from "../utils/index.utils";
 
 class TokenService {
