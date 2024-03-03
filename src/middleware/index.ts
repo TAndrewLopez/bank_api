@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { Schema } from "yup";
 
-import Utility from "../utils/index.utils";
 import { ResponseCode } from "../interfaces/enum/codeEnum";
+import Utility from "../utils/index.utils";
 
 export const validator = (schema: Schema<any>) => {
     return async (request: Request, response: Response, next: NextFunction) => {

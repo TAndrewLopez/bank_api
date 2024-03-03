@@ -1,12 +1,14 @@
 import express, { Request, Response } from "express";
+
 import UserController from "../controllers/userController";
 import UserService from "../services/userService";
 import { validator } from "../middleware";
 import ValidationSchema from "../validators/userValidatorSchema";
+import UserDataSource from "../dataSources/userDataSource";
 
 const createUserRoute = () => {
     const router = express.Router();
-    const userService = new UserService();
+    const userService = new UserService(new UserDataSource());
     const userController = new UserController(userService);
 
     router.post(

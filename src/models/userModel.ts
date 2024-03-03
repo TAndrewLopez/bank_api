@@ -1,18 +1,18 @@
+import { DataTypes } from "sequelize";
+
 import db from "../db";
 import { IUserModel } from "../interfaces/userInterface";
-import { DataTypes } from "sequelize";
 
 const UserModel = db.define<IUserModel>(
     "UserModel",
     {
-        id: { type: DataTypes.INTEGER, allowNull: false, primaryKey: true },
         username: { type: DataTypes.STRING, allowNull: false, unique: true },
         password: { type: DataTypes.STRING, allowNull: false },
         firstName: { type: DataTypes.STRING, allowNull: false },
         lastName: { type: DataTypes.STRING, allowNull: false },
-        email: { type: DataTypes.STRING, allowNull: false },
+        email: { type: DataTypes.STRING, allowNull: false, unique: true },
         role: { type: DataTypes.STRING, allowNull: true },
-        isEmailVerified: { type: DataTypes.BOOLEAN, defaultValue: false },
+        isEmailVerified: { type: DataTypes.STRING, allowNull: true },
         accountStatus: { type: DataTypes.STRING, allowNull: true },
         createdAt: {
             type: DataTypes.DATE,
