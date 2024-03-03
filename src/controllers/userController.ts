@@ -23,6 +23,7 @@ class UserController {
             response.send({ message: "Server error." });
         }
     }
+
     async forgotPassword(request: Request, response: Response) {
         try {
             response.send({ message: "Forgot password email delivered." })
@@ -30,6 +31,7 @@ class UserController {
             response.send({ message: "Server error." });
         }
     }
+    
     async resetPassword(request: Request, response: Response) {
         try {
             response.send({ message: "Reset password successful." })
