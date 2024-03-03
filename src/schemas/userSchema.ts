@@ -5,11 +5,21 @@ const registerSchema = yup.object({
     lastName: yup.string().lowercase().trim().required(),
     email: yup.string().email().lowercase().trim().required(),
     password: yup.string().min(6).trim().required(),
-})
+});
 
+const loginSchema = yup.object({
+    email: yup.string().lowercase().trim().required(),
+    password: yup.string().trim().required(),
+});
+
+const forgotPasswordSchema = yup.object({
+    email: yup.string().lowercase().trim().required(),
+});
 
 const ValidationSchema = {
-    registerSchema
+    forgotPasswordSchema,
+    loginSchema,
+    registerSchema,
 }
 
 export default ValidationSchema;

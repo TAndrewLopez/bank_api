@@ -1,15 +1,18 @@
 import express, { Request, Response } from "express";
 
 import UserController from "../controllers/userController";
-import UserService from "../services/userService";
-import { validator } from "../middleware";
-import ValidationSchema from "../validators/userValidatorSchema";
+import TokenDataSource from "../dataSources/tokenDataSource";
 import UserDataSource from "../dataSources/userDataSource";
+import { validator } from "../middleware";
+import ValidationSchema from "../schemas/userSchema";
+import TokenService from "../services/tokenService";
+import UserService from "../services/userService";
 
 const createUserRoute = () => {
     const router = express.Router();
     const userService = new UserService(new UserDataSource());
-    const userController = new UserController(userService);
+    const tokenService = new TokenService(new TokenDataSource());
+    const userController = new UserController(userService, tokenService);
 
     router.post(
         "/register",
@@ -19,13 +22,19 @@ const createUserRoute = () => {
         }
     );
 
-    router.post("/login", (request: Request, response: Response) => {
-        return userController.login(request, response);
-    });
+    router.post(
+        "/login",
+        validator(ValidationSchema.loginSchema),
+        (request: Request, response: Response) => {
+            return userController.login(request, response);
+        }
+    );
 
-    router.post("/forgotPassword", (request: Request, response: Response) => {
-        return userController.forgotPassword(request, response);
-    });
+    router.post("/forgotPassword",
+        validator(ValidationSchema.forgotPasswordSchema),
+        (request: Request, response: Response) => {
+            return userController.forgotPassword(request, response);
+        });
 
     router.post("/resetPassword", (request: Request, response: Response) => {
         return userController.resetPassword(request, response);

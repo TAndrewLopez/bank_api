@@ -12,6 +12,10 @@ class UserService {
         this.userDataSource = _userDataSource;
     }
 
+    async createUser(record: IUserCreationBody): Promise<IUser> {
+        return this.userDataSource.create(record);
+    }
+
     async getUserByField(record: Partial<IUser>): Promise<IUser | null> {
         const query = {
             where: {
@@ -20,10 +24,6 @@ class UserService {
             raw: true,
         } as IFindUserQuery;
         return this.userDataSource.fetchOne(query);
-    }
-
-    async createUser(record: IUserCreationBody): Promise<IUser> {
-        return this.userDataSource.create(record);
     }
 }
 

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { Schema } from "yup";
 
-import { ResponseCode } from "../interfaces/enum/codeEnum";
+import { ResponseCode } from "../interfaces/enum/responseCodeEnum";
 import Utility from "../utils/index.utils";
 
 export const validator = (schema: Schema<any>) => {
