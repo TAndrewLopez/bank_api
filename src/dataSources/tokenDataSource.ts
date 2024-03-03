@@ -1,14 +1,22 @@
-import { IFindTokenQuery, IToken, ITokenCreationBody, ITokenDataSource } from "../interfaces/tokenInterface";
+import {
+    IFindTokenQuery,
+    IToken,
+    ITokenCreationBody,
+    ITokenDataSource,
+} from "../interfaces/tokenInterface";
 import TokenModel from "../models/tokenModel";
 
 class TokenDataSource implements ITokenDataSource {
-    async create(record: ITokenCreationBody): Promise<IToken> {
-        return await TokenModel.create(record);
+    async create(data: ITokenCreationBody): Promise<IToken> {
+        return await TokenModel.create(data);
     }
     async fetchOne(query: IFindTokenQuery): Promise<IToken | null> {
         return await TokenModel.findOne(query);
     }
-    async updateOne(data: Partial<IToken>, query: IFindTokenQuery): Promise<void> {
+    async updateOne(
+        query: IFindTokenQuery,
+        data: Partial<IToken>
+    ): Promise<void> {
         await TokenModel.update(data, query);
     }
 }

@@ -1,4 +1,5 @@
 import moment from "moment";
+
 import TokenDataSource from "../dataSources/tokenDataSource";
 import { IFindTokenQuery, IToken, ITokenCreationBody } from "../interfaces/tokenInterface";
 import Utility from "../utils/index.utils";
@@ -49,6 +50,14 @@ class TokenService {
             }
         }
         return this.tokenDataSource.create(tokenData);
+    }
+
+    async updateRecord(
+        searchBy: Partial<IToken>,
+        data: Partial<IToken>
+    ): Promise<void> {
+        const query = { where: { ...searchBy }, raw: true } as IFindTokenQuery;
+        await this.tokenDataSource.updateOne(query, data);
     }
 }
 

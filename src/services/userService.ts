@@ -1,4 +1,9 @@
-import { IFindUserQuery, IUser, IUserCreationBody, IUserDataSource } from "../interfaces/userInterface";
+import {
+    IFindUserQuery,
+    IUser,
+    IUserCreationBody,
+    IUserDataSource,
+} from "../interfaces/userInterface";
 
 class UserService {
     private userDataSource: IUserDataSource;
@@ -7,8 +12,8 @@ class UserService {
         this.userDataSource = _userDataSource;
     }
 
-    async createUser(record: IUserCreationBody): Promise<IUser> {
-        return this.userDataSource.create(record);
+    async createUser(data: IUserCreationBody): Promise<IUser> {
+        return this.userDataSource.create(data);
     }
 
     async getUserByField(record: Partial<IUser>): Promise<IUser | null> {
@@ -19,6 +24,14 @@ class UserService {
             raw: true,
         } as IFindUserQuery;
         return this.userDataSource.fetchOne(query);
+    }
+
+    async updateRecord(
+        searchBy: Partial<IUser>,
+        data: Partial<IUser>
+    ): Promise<void> {
+        const query = { where: { ...searchBy }, raw: true } as IFindUserQuery;
+        await this.userDataSource.updateOne(query, data);
     }
 }
 

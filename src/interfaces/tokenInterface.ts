@@ -19,12 +19,15 @@ export interface IFindTokenQuery {
   returning: boolean;
 }
 
-export interface ITokenCreationBody extends Optional<IToken, "id" | "createdAt" | "updatedAt"> {}
+export interface ITokenCreationBody
+  extends Optional<IToken, "id" | "createdAt" | "updatedAt"> { }
 
-export interface ITokenModel extends Model<IToken, ITokenCreationBody>, IToken {}
+export interface ITokenModel
+  extends Model<IToken, ITokenCreationBody>,
+  IToken { }
 
 export interface ITokenDataSource {
   create(record: ITokenCreationBody): Promise<IToken>;
   fetchOne(query: IFindTokenQuery): Promise<IToken | null>;
-  updateOne(data: Partial<IToken>, query: IFindTokenQuery): Promise<void>;
+  updateOne(query: IFindTokenQuery, data: Partial<IToken>): Promise<void>;
 }

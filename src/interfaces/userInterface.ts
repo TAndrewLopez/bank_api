@@ -22,11 +22,13 @@ export interface IFindUserQuery {
   returning: boolean;
 }
 
-export interface IUserCreationBody extends Optional<IUser, "id" | "createdAt" | "updatedAt"> {}
+export interface IUserCreationBody
+  extends Optional<IUser, "id" | "createdAt" | "updatedAt"> { }
 
-export interface IUserModel extends Model<IUser, IUserCreationBody>, IUser {}
+export interface IUserModel extends Model<IUser, IUserCreationBody>, IUser { }
 
 export interface IUserDataSource {
-  create(record: IUserCreationBody): Promise<IUser>;
+  create(data: IUserCreationBody): Promise<IUser>;
   fetchOne(query: IFindUserQuery): Promise<IUser | null>;
+  updateOne(query: IFindUserQuery, data: Partial<IUser>): Promise<void>;
 }
