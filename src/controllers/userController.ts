@@ -55,7 +55,11 @@ class UserController {
                 ResponseCode.SUCCESS
             );
         } catch (error) {
-            response.send({ message: "Server error." });
+            return Utility.handleError(
+                response,
+                (error as TypeError).message,
+                ResponseCode.SERVER_ERROR
+            );
         }
     }
 
@@ -87,15 +91,32 @@ class UserController {
                 );
             }
 
-            // const token = JWT.sign({
-            //     id: user.id,
-            //     firstName:user.firstName,
-            //     lastName: user.lastName,
+            const token = JWT.sign(
+                {
+                    id: user.id,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    email: user.email,
+                    role: user.role,
+                },
+                process.env.JWT_KEY as string,
+                {
+                    expiresIn: "30d",
+                }
+            );
 
-            // })
-            response.send({ message: "Login successful." });
+            return Utility.handleSuccess(
+                response,
+                "Login Successful",
+                { user, token },
+                ResponseCode.SUCCESS
+            );
         } catch (error) {
-            response.send({ message: "Server error." });
+            return Utility.handleError(
+                response,
+                (error as TypeError).message,
+                ResponseCode.SERVER_ERROR
+            );
         }
     }
 

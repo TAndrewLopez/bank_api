@@ -1,6 +1,7 @@
 import { Model, Optional } from "sequelize";
 
 export interface IUser {
+    id?: number;
     username: string;
     password: string;
     firstName: string;
@@ -26,9 +27,7 @@ export interface IUserCreationBody
 
 
 
-export interface IUserModel extends Model<IUser, IUserCreationBody>, IUser {
-    id: number
-}
+export interface IUserModel extends Model<IUser, IUserCreationBody>, IUser { }
 
 export interface IUserDataSource {
     fetchOne(query: IFindUserQuery): Promise<IUser | null>;
