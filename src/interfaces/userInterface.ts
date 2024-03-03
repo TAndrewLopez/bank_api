@@ -24,7 +24,11 @@ export interface IFindUserQuery {
 export interface IUserCreationBody
     extends Optional<IUser, "createdAt" | "updatedAt"> { }
 
-export interface IUserModel extends Model<IUser, IUserCreationBody>, IUser { }
+
+
+export interface IUserModel extends Model<IUser, IUserCreationBody>, IUser {
+    id: number
+}
 
 export interface IUserDataSource {
     fetchOne(query: IFindUserQuery): Promise<IUser | null>;

@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
+import JWT from "jsonwebtoken";
 
 import { ResponseCode } from "../interfaces/enum/codeEnum";
 import {
@@ -60,6 +61,38 @@ class UserController {
 
     async login(request: Request, response: Response) {
         try {
+            const params = { ...request.body };
+            const user = await this.userService.getUserByField({
+                email: params.email,
+            });
+
+            if (!user) {
+                return Utility.handleError(
+                    response,
+                    "Invalid Credentials.",
+                    ResponseCode.NOT_FOUND
+                );
+            }
+
+            const passwordMatches = await bcrypt.compare(
+                params.password,
+                user.password
+            );
+
+            if (!passwordMatches) {
+                return Utility.handleError(
+                    response,
+                    "Invalid Credentials",
+                    ResponseCode.NOT_FOUND
+                );
+            }
+
+            // const token = JWT.sign({
+            //     id: user.id,
+            //     firstName:user.firstName,
+            //     lastName: user.lastName,
+
+            // })
             response.send({ message: "Login successful." });
         } catch (error) {
             response.send({ message: "Server error." });
